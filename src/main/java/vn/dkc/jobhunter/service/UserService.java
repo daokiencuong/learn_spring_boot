@@ -1,11 +1,11 @@
-package vn.ngotien.jobhunter.service;
+package vn.dkc.jobhunter.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import vn.ngotien.jobhunter.domain.User;
-import vn.ngotien.jobhunter.repository.UserRepository;
+import vn.dkc.jobhunter.domain.User;
+import vn.dkc.jobhunter.repository.UserRepository;
 
 @Service
 public class UserService {

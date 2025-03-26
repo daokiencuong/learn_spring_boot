@@ -1,4 +1,4 @@
-package vn.ngotien.jobhunter.domain;
+package vn.dkc.jobhunter.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

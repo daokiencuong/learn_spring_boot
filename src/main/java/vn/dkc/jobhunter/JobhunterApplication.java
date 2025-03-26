@@ -1,4 +1,4 @@
-package vn.ngotien.jobhunter;
+package vn.dkc.jobhunter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

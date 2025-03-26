@@ -1,9 +1,9 @@
-package vn.ngotien.jobhunter.repository;
+package vn.dkc.jobhunter.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import vn.ngotien.jobhunter.domain.User;
+import vn.dkc.jobhunter.domain.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

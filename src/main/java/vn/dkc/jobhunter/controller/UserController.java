@@ -1,4 +1,4 @@
-package vn.ngotien.jobhunter.controller;
+package vn.dkc.jobhunter.controller;
 
 import java.util.List;
 
@@ -8,21 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PutMapping;
 
-import vn.ngotien.jobhunter.domain.User;
-import vn.ngotien.jobhunter.service.UserService;
+import vn.dkc.jobhunter.domain.User;
+import vn.dkc.jobhunter.service.UserService;
+
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 public class UserController {
 
-    private final HelloController helloController;
     private final UserService userService;
 
     public UserController(UserService userService, HelloController helloController) {
         this.userService = userService;
-        this.helloController = helloController;
     }
 
     @PostMapping("/user")
