@@ -1,5 +1,7 @@
 package vn.ngotien.jobhunter.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import vn.ngotien.jobhunter.domain.User;
@@ -15,6 +17,18 @@ public class UserService {
 
     public User handleCreateUser(User user){
         return this.userRepository.save(user);
+    }
+
+    public User handleGetUserById(long id){
+        return this.userRepository.findById(id).orElse(null);
+    }
+
+    public User handleUpdateUser(User user){
+        return this.userRepository.save(user);
+    }
+
+    public List<User> handleGetAllUser(){
+        return this.userRepository.findAll();
     }
 
     public void handleDeleteUser(long id){
