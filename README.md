@@ -1,16 +1,23 @@
-# Java Spring Starter template
-Template này được sử dụng cho series Java Spring Restful (dự án jobHunter) của tác giả Hỏi Dân IT (Eric)
+# Jobhunter - Spring Boot Learning Project
 
-## Về tác giả
-Mọi thông tin về Tác giả Hỏi Dân IT, các bạn có thể tìm kiếm tại đây:
+## Overview
+**Jobhunter** là một ứng dụng web Spring Boot (v3.2.4) để quản lý việc làm. Đây là dự án tôi dùng để học Spring Boot, tập trung vào REST API, cơ sở dữ liệu, bảo mật, và giao diện web.
 
-Website chính thức: https://hoidanit.vn/
+## Tech Stack
+- **Spring Boot 3.2.4**: Framework chính
+- **Spring Data JPA**: Quản lý dữ liệu với MySQL
+- **Spring Security & OAuth2**: Bảo mật ứng dụng
+- **Thymeleaf**: Render giao diện HTML
+- **Spring Mail**: Gửi email
+- **Springdoc OpenAPI**: Tài liệu API (Swagger)
+- **Spring Boot Actuator**: Giám sát ứng dụng
+- **Maven**: Quản lý dependency
 
-Youtube “Hỏi Dân IT” : https://www.youtube.com/@hoidanit
-
-Tiktok “Hỏi Dân IT” :  https://www.tiktok.com/@hoidanit
-
-Fanpage “Hỏi Dân IT” : https://www.facebook.com/askITwithERIC/
-
-Udemy Hỏi Dân IT: https://www.udemy.com/user/eric-7039/
-
+## Learning Goals
+- Cài đặt môi trường (JDK, VS Code, MySQL).
+- Xây dựng REST API (CRUD).
+- Tích hợp MySQL với Spring Data JPA.
+- Bảo mật với Spring Security và OAuth2.
+- Render giao diện với Thymeleaf.
+- Gửi email, tạo tài liệu API, và giám sát ứng dụng.
+- Debug lỗi (VD: `Unknown database 'jobhunter'`).
