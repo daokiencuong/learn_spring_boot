@@ -74,8 +74,8 @@ while
 do
     ls=$( ls -ld "$app_path" )
     link=${ls#*' -> '}
-    case $link in             #(
-      /*)   app_path=$link ;; #(
+    case $link in             (
+      /*)   app_path=$link ;; (
       *)    app_path=$APP_HOME$link ;;
     esac
 done
@@ -105,10 +105,10 @@ cygwin=false
 msys=false
 darwin=false
 nonstop=false
-case "$( uname )" in                #(
-  CYGWIN* )         cygwin=true  ;; #(
-  Darwin* )         darwin=true  ;; #(
-  MSYS* | MINGW* )  msys=true    ;; #(
+case "$( uname )" in                (
+  CYGWIN* )         cygwin=true  ;; (
+  Darwin* )         darwin=true  ;; (
+  MSYS* | MINGW* )  msys=true    ;; (
   NONSTOP* )        nonstop=true ;;
 esac
 
@@ -142,15 +142,15 @@ fi
 
 # Increase the maximum file descriptors if we can.
 if ! "$cygwin" && ! "$darwin" && ! "$nonstop" ; then
-    case $MAX_FD in #(
+    case $MAX_FD in (
       max*)
         # In POSIX sh, ulimit -H is undefined. That's why the result is checked to see if it worked.
         # shellcheck disable=SC2039,SC3045
         MAX_FD=$( ulimit -H -n ) ||
             warn "Could not query maximum file descriptor limit"
     esac
-    case $MAX_FD in  #(
-      '' | soft) :;; #(
+    case $MAX_FD in  (
+      '' | soft) :;; (
       *)
         # In POSIX sh, ulimit -n is undefined. That's why the result is checked to see if it worked.
         # shellcheck disable=SC2039,SC3045
@@ -177,10 +177,11 @@ if "$cygwin" || "$msys" ; then
     # Now convert the arguments - kludge to limit ourselves to /bin/sh
     for arg do
         if
-            case $arg in                                #(
-              -*)   false ;;                            # don't mess with options #(
+            case $arg in                                (
+              -*)   false ;;                            # don't mess with options 
+              (
               /?*)  t=${arg#/} t=/${t%%/*}              # looks like a POSIX filepath
-                    [ -e "$t" ] ;;                      #(
+                    [ -e "$t" ] ;;                      (
               *)    false ;;
             esac
         then
