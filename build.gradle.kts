@@ -25,8 +25,8 @@ dependencies {
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 	//Auto restart server when code change
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	compileOnly("org.projectlombok:lombok:1.18.30")
-	annotationProcessor("org.projectlombok:lombok:1.18.30")
+	// compileOnly("org.projectlombok:lombok:1.18.30")
+	// annotationProcessor("org.projectlombok:lombok:1.18.30")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
