@@ -44,13 +44,13 @@ public class UserController {
 
     @PutMapping("/users")
     public ResponseEntity<User> putMethodName(@RequestBody User user) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.userService.handleUpdateUser(user));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.handleUpdateUser(user));
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") long id){
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") long id){
         this.userService.handleDeleteUser(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Delete user");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
