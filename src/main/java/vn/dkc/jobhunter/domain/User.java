@@ -1,5 +1,8 @@
 package vn.dkc.jobhunter.domain;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.DynamicInsert;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +12,8 @@ import jakarta.persistence.Table;
 //domain driven design
 @Entity
 @Table(name = "users")
+@DynamicUpdate //Update only the fields that have changed
+@DynamicInsert //Insert only the fields that have changed
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
