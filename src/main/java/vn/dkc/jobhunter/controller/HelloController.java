@@ -9,7 +9,7 @@ import vn.dkc.jobhunter.service.error.IdInvalidException;
 public class HelloController {
 
     @GetMapping("/")
-    public String getHelloWorld() throws IdInvalidException {
+    public String getHelloWorld() {
         return "Hello World (Hỏi Dân IT & Eric)";
     }
 }
