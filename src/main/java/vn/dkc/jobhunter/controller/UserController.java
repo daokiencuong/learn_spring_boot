@@ -49,10 +49,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.handleUpdateUser(user));
     }
 
-    @ExceptionHandler(IdInvalidException.class)
-    public ResponseEntity<String> handleIdInvalidException(IdInvalidException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) throws IdInvalidException{
         if(id >= 100){
