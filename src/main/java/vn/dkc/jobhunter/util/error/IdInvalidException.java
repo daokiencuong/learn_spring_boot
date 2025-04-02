@@ -1,4 +1,4 @@
-package vn.dkc.jobhunter.service.error;
+package vn.dkc.jobhunter.util.error;
 
 public class IdInvalidException extends Exception{
     //Constructor for IdInvalidException

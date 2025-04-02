@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import vn.dkc.jobhunter.domain.dto.LoginDTO;
 
 @RestController
 public class AuthController {
-    //Dêpencency Injection 
+    //Dependency Injection 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder) {
@@ -21,13 +22,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDTO> login (@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<LoginDTO> login (@Valid @RequestBody LoginDTO loginDTO){
         //Load username and password to Security
         UsernamePasswordAuthenticationToken authenticationToken
         = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
 
         //Authenticate user
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
         return ResponseEntity.status(HttpStatus.OK).body(loginDTO);
     }
 }

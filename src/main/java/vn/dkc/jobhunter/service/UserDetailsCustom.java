@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 
 @Component("userDetailsService")
-public class UserDetailCustom implements UserDetailsService{
+public class UserDetailsCustom implements UserDetailsService{
     private final UserService userService;
     
     // Constructor injection
-    public UserDetailCustom(UserService userService) {
+    public UserDetailsCustom(UserService userService) {
         this.userService = userService;
     }
 
