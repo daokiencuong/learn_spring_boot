@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import vn.dkc.jobhunter.domain.RestResponse;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -31,8 +32,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         RestResponse<Object> res = new RestResponse<>();
         res.setStatusCode(HttpStatus.UNAUTHORIZED.value());
+        String errorMessage = Optional.ofNullable(authException.getCause())
+                        .map(Throwable::getMessage)
+                                .orElse(authException.getMessage());
+
         res.setMessage("Token expired...");
-        res.setError(authException.getCause().getMessage());
+        res.setError(errorMessage);
 
         mapper.writeValue(response.getWriter(), res);
     }
