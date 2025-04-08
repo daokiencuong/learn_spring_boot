@@ -41,6 +41,7 @@ public class CompanyController {
 
     @DeleteMapping("/companies/{id}")
     public ResponseEntity<Void> deleteCompanyById(@PathVariable("id") long id) {
+        this.companyService.handeDeleteCompanyById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
