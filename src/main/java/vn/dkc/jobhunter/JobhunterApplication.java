@@ -3,16 +3,21 @@ package vn.dkc.jobhunter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//disable security
-// @SpringBootApplication(exclude = {
-// 		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-// 		org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class
-// })
-
+/**
+ * Đây là class chính của ứng dụng JobHunter, sử dụng Spring Boot Framework
+ * 
+ * @SpringBootApplication là annotation đánh dấu đây là ứng dụng Spring Boot, tự động kích hoạt: -
+ *                        Cấu hình tự động (Auto-configuration) - Quét component (Component
+ *                        scanning) - Các tính năng bổ sung của Spring Boot
+ */
 @SpringBootApplication
 public class JobhunterApplication {
+	/**
+	 * Phương thức main để khởi động ứng dụng Spring Boot
+	 * 
+	 * @param args tham số dòng lệnh khi chạy ứng dụng
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(JobhunterApplication.class, args);
 	}
-
 }

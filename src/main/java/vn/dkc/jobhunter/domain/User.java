@@ -9,17 +9,40 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-//domain driven design
+/**
+ * Entity đại diện cho người dùng trong hệ thống Sử dụng JPA để mapping với bảng 'users' trong
+ * database
+ * 
+ * @Entity đánh dấu đây là một entity JPA
+ * @Table chỉ định tên bảng trong database
+ * @DynamicUpdate chỉ cập nhật các trường đã thay đổi
+ * @DynamicInsert chỉ insert các trường có giá trị
+ */
 @Entity
 @Table(name = "users")
-@DynamicUpdate //Update only the fields that have changed
-@DynamicInsert //Insert only the fields that have changed
+@DynamicUpdate
+@DynamicInsert
 public class User {
+    /**
+     * ID của người dùng, tự động tăng
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    /**
+     * Tên người dùng
+     */
     private String name;
+
+    /**
+     * Email của người dùng, dùng để đăng nhập
+     */
     private String email;
+
+    /**
+     * Mật khẩu của người dùng (đã được mã hóa)
+     */
     private String password;
 
     public String getName() {
@@ -54,5 +77,5 @@ public class User {
         this.id = id;
     }
 
-    
+
 }

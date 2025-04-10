@@ -15,30 +15,48 @@ import vn.dkc.jobhunter.domain.dto.LoginDTO;
 import vn.dkc.jobhunter.domain.dto.ResLoginDTO;
 import vn.dkc.jobhunter.util.SecurityUtil;
 
+/**
+ * Controller xử lý các yêu cầu liên quan đến xác thực người dùng Cung cấp API endpoint cho việc
+ * đăng nhập và tạo JWT token
+ */
 @RestController
 public class AuthController {
-    //Dependency Injection 
+    /**
+     * Dependency Injection các service cần thiết authenticationManagerBuilder: Xử lý xác thực người
+     * dùng securityUtil: Tiện ích tạo và quản lý JWT token
+     */
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
 
-    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder, SecurityUtil securityUtil) {
+    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder,
+            SecurityUtil securityUtil) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
     }
 
+    /**
+     * API endpoint xử lý đăng nhập người dùng
+     * 
+     * @param loginDTO đối tượng chứa thông tin đăng nhập (username, password)
+     * @return ResponseEntity chứa JWT token nếu đăng nhập thành công
+     */
     @PostMapping("/login")
-    public ResponseEntity<ResLoginDTO> login (@Valid @RequestBody LoginDTO loginDTO){
-        //Load username and password to Security
-        UsernamePasswordAuthenticationToken authenticationToken
-        = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
+        // Tạo đối tượng xác thực từ username và password
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),
+                        loginDTO.getPassword());
 
-        //Authenticate user
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        // Thực hiện xác thực người dùng
+        Authentication authentication =
+                authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        //Create a token
+        // Tạo JWT token từ thông tin xác thực
         String access_token = this.securityUtil.createToken(authentication);
+        // Lưu thông tin xác thực vào SecurityContext
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // Tạo response chứa token
         ResLoginDTO resLoginDTO = new ResLoginDTO();
         resLoginDTO.setAccessToken(access_token);
 
