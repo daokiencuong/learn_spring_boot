@@ -90,6 +90,8 @@ public class UserService {
                     userGetDTO.setAge(user.getAge());
                     userGetDTO.setGender(user.getGender());
                     userGetDTO.setAddress(user.getAddress());
+                    userGetDTO.setCreatedAt(user.getCreatedAt());
+                    userGetDTO.setUpdatedAt(user.getUpdatedAt());
                     return userGetDTO;
                 })
                 .toList();

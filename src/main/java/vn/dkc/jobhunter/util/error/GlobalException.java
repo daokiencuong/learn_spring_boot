@@ -63,17 +63,8 @@ public class GlobalException {
             NoResourceFoundException e) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.NOT_FOUND.value());
-        res.setMessage("Resource not found");
+        res.setMessage("404 NOT FOUND. Resource not found");
         res.setError(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
-    }
-
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<Object> handleNullPointerException(NullPointerException e) {
-        RestResponse<Object> res = new RestResponse<Object>();
-        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        res.setMessage("Invalid filter input");
-        res.setError(e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
     }
 }

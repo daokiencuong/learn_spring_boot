@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import vn.dkc.jobhunter.domain.User;
 import vn.dkc.jobhunter.domain.dto.LoginDTO;
 import vn.dkc.jobhunter.domain.dto.ResLoginDTO;
+import vn.dkc.jobhunter.service.UserService;
 import vn.dkc.jobhunter.util.SecurityUtil;
 
 /**
@@ -29,11 +31,15 @@ public class AuthController {
      */
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
+    private final UserService userService;
 
-    public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder,
-            SecurityUtil securityUtil) {
+    public AuthController(
+            AuthenticationManagerBuilder authenticationManagerBuilder,
+            SecurityUtil securityUtil,
+            UserService userService) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
+        this.userService = userService;
     }
 
     /**
@@ -60,6 +66,19 @@ public class AuthController {
 
         // Tạo response chứa token
         ResLoginDTO resLoginDTO = new ResLoginDTO();
+
+        User currentUserDB = this.userService.handleGetUserByEmail(loginDTO.getUsername());
+
+        if(currentUserDB != null) {
+            ResLoginDTO.UserLogin userLogin = resLoginDTO.new UserLogin(
+                            currentUserDB.getId(),
+                            currentUserDB.getEmail(),
+                            currentUserDB.getName()
+            );
+
+            resLoginDTO.setUser(userLogin);
+        }
+
         resLoginDTO.setAccessToken(access_token);
 
         return ResponseEntity.status(HttpStatus.OK).body(resLoginDTO);

@@ -24,7 +24,10 @@ public class UserDetailsCustom implements UserDetailsService{
         // TODO Auto-generated method stub
         vn.dkc.jobhunter.domain.User user = this.userService.handleGetUserByEmail(username);
 
-        return new User(user.getEmail(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        return new User(
+                user.getEmail(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
 }

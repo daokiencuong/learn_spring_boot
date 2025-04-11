@@ -102,5 +102,4 @@ public class UserController {
         this.userService.handleDeleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
