@@ -1,16 +1,18 @@
 package vn.dkc.jobhunter.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dkc.jobhunter.domain.User;
-import vn.dkc.jobhunter.domain.dto.Meta;
-import vn.dkc.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.dkc.jobhunter.domain.dto.*;
 import vn.dkc.jobhunter.repository.UserRepository;
+import vn.dkc.jobhunter.util.error.EmailExsitsException;
+import vn.dkc.jobhunter.util.error.IdInvalidException;
+
+import java.time.Instant;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -20,20 +22,78 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User handleCreateUser(User user){
-        return this.userRepository.save(user);
+    public UserCreateDTO handleCreateUser(User user) throws EmailExsitsException {
+        if(this.userRepository.existsByEmail(user.getEmail())){
+            throw new EmailExsitsException("Email " + user.getEmail() + " đã tồn tại. Vui lòng sử dụng email khác.");
+        }
+        User newUser = this.userRepository.save(user);
+        UserCreateDTO userCreateDTO = new UserCreateDTO();
+
+        userCreateDTO.setId(newUser.getId());
+        userCreateDTO.setName(newUser.getName());
+        userCreateDTO.setEmail(newUser.getEmail());
+        userCreateDTO.setAge(newUser.getAge());
+        userCreateDTO.setGender(newUser.getGender());
+        userCreateDTO.setAddress(newUser.getAddress());
+        userCreateDTO.setCreatedAt(newUser.getCreatedAt());
+
+        return userCreateDTO;
     }
 
-    public User handleGetUserById(long id){
-        return this.userRepository.findById(id).orElse(null);
+    public UserGetDTO handleGetUserById(long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IdInvalidException("User not found"));
+
+        UserGetDTO userGetDTO = new UserGetDTO();
+
+        userGetDTO.setId(user.getId());
+        userGetDTO.setName(user.getName());
+        userGetDTO.setEmail(user.getEmail());
+        userGetDTO.setAge(user.getAge());
+        userGetDTO.setGender(user.getGender());
+        userGetDTO.setAddress(user.getAddress());
+
+        return userGetDTO;
     }
 
-    public User handleUpdateUser(User user){
-        return this.userRepository.save(user);
+    public UserUpdateDTO handleUpdateUser(UserUpdateDTO userUpdateDTO) throws IdInvalidException {
+        User user = userRepository.findById(userUpdateDTO.getId())
+                .orElseThrow(() -> new IdInvalidException("User not found"));
+
+        if (userUpdateDTO.getName() != null) {
+            user.setName(userUpdateDTO.getName());
+        }
+
+        if (userUpdateDTO.getAddress() != null) {
+            user.setAddress(userUpdateDTO.getAddress());
+        }
+
+        user.setUpdatedAt(Instant.now());
+
+        this.userRepository.save(user);
+
+        userUpdateDTO.setUpdateAt(user.getUpdatedAt());
+
+        return userUpdateDTO;
     }
 
     public ResultPaginationDTO handleGetAllUser(Specification<User> spec, Pageable pageable){
         Page<User> pageUser = this.userRepository.findAll(spec, pageable);
+
+        List<UserGetDTO> userGetDTOList = pageUser.getContent()
+                .stream()
+                .map(user -> {
+                    UserGetDTO userGetDTO = new UserGetDTO();
+                    userGetDTO.setId(user.getId());
+                    userGetDTO.setName(user.getName());
+                    userGetDTO.setEmail(user.getEmail());
+                    userGetDTO.setAge(user.getAge());
+                    userGetDTO.setGender(user.getGender());
+                    userGetDTO.setAddress(user.getAddress());
+                    return userGetDTO;
+                })
+                .toList();
+
         ResultPaginationDTO paginationDTO = new ResultPaginationDTO();
         Meta meta = new Meta();
 
@@ -44,12 +104,14 @@ public class UserService {
         meta.setTotal(pageUser.getTotalElements());
 
         paginationDTO.setMeta(meta);
-        paginationDTO.setResult(pageUser.getContent());
+        paginationDTO.setResult(userGetDTOList);
 
         return paginationDTO;
     }
 
-    public void handleDeleteUser(long id){
+    public void handleDeleteUser(long id) throws IdInvalidException {
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new IdInvalidException("User not found"));
         this.userRepository.deleteById(id);
     }
 

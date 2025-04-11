@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ import vn.dkc.jobhunter.util.SecurityUtil;
  * đăng nhập và tạo JWT token
  */
 @RestController
+@RequestMapping("/api/${dkc.application.version}")
 public class AuthController {
     /**
      * Dependency Injection các service cần thiết authenticationManagerBuilder: Xử lý xác thực người

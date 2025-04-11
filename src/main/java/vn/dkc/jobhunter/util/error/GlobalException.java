@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import vn.dkc.jobhunter.domain.RestResponse;
 
 import java.util.stream.Collectors;
@@ -26,7 +27,8 @@ public class GlobalException {
      * @param e Exception cần xử lý
      * @return ResponseEntity chứa thông tin lỗi đã được định dạng
      */
-    @ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class})
+    @ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class,
+            EmailExsitsException.class, IdInvalidException.class})
     public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception e) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
@@ -54,5 +56,24 @@ public class GlobalException {
 
         res.setError("Invalid request content");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Object> handleNoResourceFoundException(
+            NoResourceFoundException e) {
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.NOT_FOUND.value());
+        res.setMessage("Resource not found");
+        res.setError(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> handleNullPointerException(NullPointerException e) {
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setMessage("Invalid filter input");
+        res.setError(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
     }
 }

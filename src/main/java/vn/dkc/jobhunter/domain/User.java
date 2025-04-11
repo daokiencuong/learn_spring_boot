@@ -1,13 +1,16 @@
 package vn.dkc.jobhunter.domain;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.DynamicInsert;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import vn.dkc.jobhunter.util.SecurityUtil;
+import vn.dkc.jobhunter.util.constant.GenderEnum;
+
+import java.time.Instant;
 
 /**
  * Entity đại diện cho người dùng trong hệ thống Sử dụng JPA để mapping với bảng 'users' trong
@@ -22,6 +25,8 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 @DynamicUpdate
 @DynamicInsert
+@Getter
+@Setter
 public class User {
     /**
      * ID của người dùng, tự động tăng
@@ -38,44 +43,47 @@ public class User {
     /**
      * Email của người dùng, dùng để đăng nhập
      */
+    @NotBlank(message = "Email is required")
     private String email;
 
     /**
      * Mật khẩu của người dùng (đã được mã hóa)
      */
+    @NotBlank(message = "Password is required")
     private String password;
 
-    public String getName() {
-        return name;
+    private int age;
+
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
+
+    private String address;
+    private String refreshToken;
+    private Instant createdAt;
+    private Instant updatedAt;
+    private String createdBy;
+    private String updatedBy;
+
+    /**
+     * Xử lý tự động trước khi lưu bản ghi mới Cập nhật thời gian tạo và người tạo
+     */
+    @PrePersist
+    public void handleCreateAt() {
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        this.createdAt = Instant.now();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Xử lý tự động trước khi cập nhật bản ghi Cập nhật thời gian sửa và người sửa
+     */
+    @PreUpdate
+    public void handleUpdateAt() {
+        this.updatedAt = Instant.now();
+
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-
 }
