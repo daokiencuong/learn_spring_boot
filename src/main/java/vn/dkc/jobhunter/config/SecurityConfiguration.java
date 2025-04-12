@@ -57,7 +57,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http.csrf(c -> c.disable()).cors(Customizer.withDefaults())
-                .authorizeHttpRequests(authz -> authz.requestMatchers("/", "/api/v1/login").permitAll()
+                .authorizeHttpRequests(authz ->
+                                authz
+                                        .requestMatchers("/", "/api/v1/auth/login", "/api/v1/auth/refresh")
+                                        .permitAll()
                         .anyRequest().authenticated()
 
                 // .anyRequest().permitAll()
@@ -102,7 +105,7 @@ public class SecurityConfiguration {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter =
                 new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("daokiencuong");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);

@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
+import vn.dkc.jobhunter.domain.dto.ResLoginDTO;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -55,8 +56,8 @@ public class SecurityUtil {
     /**
      * Thời gian hiệu lực của JWT token (tính bằng giây)
      */
-    @Value("${dkc.jwt.token-validity-in-seconds}")
-    private long jwtExpiration;
+    @Value("${dkc.jwt.access-token-validity-in-seconds}")
+    private long accessTokenExpiration;
 
     /**
      * Tạo JWT token từ thông tin xác thực
@@ -64,12 +65,39 @@ public class SecurityUtil {
      * @param authentication đối tượng chứa thông tin xác thực của người dùng
      * @return JWT token dạng chuỗi
      */
-    public String createToken(Authentication authentication) {
+    public String createAccessToken(String email, ResLoginDTO.UserLogin dto) {
         Instant now = Instant.now();
-        Instant validity = now.plus(this.jwtExpiration, ChronoUnit.SECONDS);
+        Instant validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);
 
-        JwtClaimsSet claims = JwtClaimsSet.builder().issuedAt(now).expiresAt(validity)
-                .subject(authentication.getName()).claim("daokiencuong", authentication).build();
+        List<String> listAuthority = new ArrayList<String>();
+
+        listAuthority.add("ROLE_USER_CREATE");
+        listAuthority.add("ROLE_USER_UPDATE");
+
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuedAt(now)
+                .expiresAt(validity)
+                .subject(email)
+                .claim("user", dto)
+                .claim("permission", listAuthority)
+                .build();
+
+        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+    }
+
+    @Value("${dkc.jwt.refresh-token-validity-in-seconds}")
+    private long refreshTokenExpiration;
+    public String createRefreshToken(String email, ResLoginDTO dto) {
+        Instant now = Instant.now();
+        Instant validity = now.plus(this.refreshTokenExpiration, ChronoUnit.SECONDS);
+
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuedAt(now)
+                .expiresAt(validity)
+                .subject(email)
+                .claim("user", dto.getUser())
+                .build();
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
@@ -102,6 +130,23 @@ public class SecurityUtil {
             return s;
         }
         return null;
+    }
+
+    private SecretKey getSecretKey() {
+        byte[] keyBytes = Base64.from(jwtKey).decode();
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length,
+                SecurityUtil.JWT_ALGORITHM.getName());
+    }
+
+    public Jwt checkValidRefreshToken(String token){
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey())
+                .macAlgorithm(SecurityUtil.JWT_ALGORITHM).build();
+        try {
+            return jwtDecoder.decode(token);
+        } catch (Exception e) {
+            System.out.println(">>> JWT ERROR: " + e.getMessage());
+            throw e;
+        }
     }
 
     /**

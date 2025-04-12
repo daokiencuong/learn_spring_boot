@@ -9,6 +9,10 @@ import vn.dkc.jobhunter.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     User findByEmail(String email);
+
     User findByName(String username);
+
     boolean existsByEmail(String email);
+
+    User findByRefreshTokenAndEmail(String refresh_token, String email);
 }
