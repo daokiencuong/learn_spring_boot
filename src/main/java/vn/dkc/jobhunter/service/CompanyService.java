@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.dkc.jobhunter.domain.Company;
-import vn.dkc.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.dkc.jobhunter.domain.response.ResultPaginationDTO;
 import vn.dkc.jobhunter.repository.CompanyRepository;
 
 @Service

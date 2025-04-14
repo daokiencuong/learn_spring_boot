@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import vn.dkc.jobhunter.domain.User;
-import vn.dkc.jobhunter.domain.dto.ReqLoginDTO;
-import vn.dkc.jobhunter.domain.dto.ResLoginDTO;
+import vn.dkc.jobhunter.domain.request.ReqLoginDTO;
+import vn.dkc.jobhunter.domain.response.ResLoginDTO;
 import vn.dkc.jobhunter.service.UserService;
 import vn.dkc.jobhunter.util.SecurityUtil;
 import vn.dkc.jobhunter.util.annotation.ApiMessage;

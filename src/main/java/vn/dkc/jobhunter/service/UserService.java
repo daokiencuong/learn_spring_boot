@@ -6,7 +6,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dkc.jobhunter.domain.User;
-import vn.dkc.jobhunter.domain.dto.*;
+import vn.dkc.jobhunter.domain.response.ResUserCreateDTO;
+import vn.dkc.jobhunter.domain.response.ResUserGetDTO;
+import vn.dkc.jobhunter.domain.response.ResUserUpdateDTO;
+import vn.dkc.jobhunter.domain.response.ResultPaginationDTO;
 import vn.dkc.jobhunter.repository.UserRepository;
 import vn.dkc.jobhunter.util.error.EmailExsitsException;
 import vn.dkc.jobhunter.util.error.IdInvalidException;

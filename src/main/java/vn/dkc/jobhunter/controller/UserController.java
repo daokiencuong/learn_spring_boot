@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import vn.dkc.jobhunter.domain.User;
-import vn.dkc.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.dkc.jobhunter.domain.dto.ResUserCreateDTO;
-import vn.dkc.jobhunter.domain.dto.ResUserGetDTO;
-import vn.dkc.jobhunter.domain.dto.ResUserUpdateDTO;
+import vn.dkc.jobhunter.domain.response.ResultPaginationDTO;
+import vn.dkc.jobhunter.domain.response.ResUserCreateDTO;
+import vn.dkc.jobhunter.domain.response.ResUserGetDTO;
+import vn.dkc.jobhunter.domain.response.ResUserUpdateDTO;
 import vn.dkc.jobhunter.service.UserService;
 import vn.dkc.jobhunter.util.annotation.ApiMessage;
 

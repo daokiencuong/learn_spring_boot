@@ -1,4 +1,4 @@
-package vn.dkc.jobhunter.domain.dto;
+package vn.dkc.jobhunter.domain.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
