@@ -79,6 +79,10 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     List<User> users;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    List<Job> jobs;
+
     /**
      * Xử lý tự động trước khi lưu bản ghi mới Cập nhật thời gian tạo và người tạo
      */
