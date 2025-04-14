@@ -8,6 +8,9 @@ import vn.dkc.jobhunter.domain.Company;
 import vn.dkc.jobhunter.domain.response.ResultPaginationDTO;
 import vn.dkc.jobhunter.repository.CompanyRepository;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Service
 public class CompanyService {
     final CompanyRepository companyRepository;
@@ -50,6 +53,14 @@ public class CompanyService {
     }
 
     public void handeDeleteCompanyById(long id) {
+        Optional<Company> company = this.companyRepository.findById(id);
+        if(company.isPresent()){
+            // Xóa tất cả các người dùng thuộc công ty này
+            company.get().getUsers().forEach(user -> {
+                user.setCompany(null);
+            });
+        }
+
         this.companyRepository.deleteById(id);
     }
 }

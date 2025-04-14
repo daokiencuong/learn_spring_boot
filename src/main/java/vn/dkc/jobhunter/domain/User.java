@@ -67,6 +67,10 @@ public class User {
     private String createdBy;
     private String updatedBy;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     /**
      * Xử lý tự động trước khi lưu bản ghi mới Cập nhật thời gian tạo và người tạo
      */

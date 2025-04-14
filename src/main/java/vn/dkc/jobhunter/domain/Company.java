@@ -1,6 +1,7 @@
 package vn.dkc.jobhunter.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import vn.dkc.jobhunter.util.SecurityUtil;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Entity đại diện cho thông tin của một công ty trong hệ thống Sử dụng JPA để mapping với bảng
@@ -72,6 +74,10 @@ public class Company {
      * Người cập nhật bản ghi gần nhất
      */
     private String updatedBy;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
+    List<User> users;
 
     /**
      * Xử lý tự động trước khi lưu bản ghi mới Cập nhật thời gian tạo và người tạo

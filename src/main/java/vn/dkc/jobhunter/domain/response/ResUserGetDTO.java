@@ -18,4 +18,13 @@ public class ResUserGetDTO {
     private String address;
     private Instant createdAt;
     private Instant updatedAt;
+    private CompanyUser company;
+
+    @Getter
+    @Setter
+    public static class CompanyUser {
+        private long id;
+        private String name;
+    }
+
 }
