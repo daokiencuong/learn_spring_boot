@@ -26,8 +26,15 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Class cấu hình bảo mật cho ứng dụng Quản lý xác thực, phân quyền và JWT (JSON Web Token)
- *
+ * Class cấu hình bảo mật cho ứng dụng, quản lý xác thực, phân quyền và JWT (JSON Web Token)
+ * 
+ * Các chức năng chính:
+ * 1. Cấu hình các endpoint được phép truy cập không cần xác thực (/api/v1/auth/login, /api/v1/auth/refresh)
+ * 2. Cấu hình JWT token (tạo token, xác thực token, trích xuất thông tin từ token)
+ * 3. Cấu hình CORS (Cross-Origin Resource Sharing)
+ * 4. Cấu hình session (STATELESS - không lưu session)
+ * 5. Cấu hình password encoder (BCrypt)
+ * 
  * @Configuration đánh dấu đây là class cấu hình Spring
  * @EnableMethodSecurity kích hoạt bảo mật trên method level với annotation @Secured
  */
@@ -46,7 +53,19 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Cấu hình chuỗi bộ lọc bảo mật
+     * Cấu hình chuỗi bộ lọc bảo mật (Security Filter Chain)
+     * 
+     * Các cấu hình chính:
+     * 1. Vô hiệu hóa CSRF vì sử dụng JWT
+     * 2. Cho phép CORS với cấu hình mặc định
+     * 3. Cấu hình các endpoint:
+     *    - Cho phép truy cập tự do: /, /api/v1/auth/login, /api/v1/auth/refresh
+     *    - Các endpoint khác yêu cầu xác thực
+     * 4. Cấu hình xác thực JWT:
+     *    - Sử dụng JWT làm resource server
+     *    - Xử lý lỗi xác thực với CustomAuthenticationEntryPoint
+     * 5. Vô hiệu hóa form login mặc định
+     * 6. Sử dụng session STATELESS (không lưu trạng thái)
      * 
      * @param http đối tượng HttpSecurity để cấu hình bảo mật
      * @param customAuthenticationEntryPoint xử lý khi xác thực thất bại
@@ -96,9 +115,14 @@ public class SecurityConfiguration {
     }
 
     /**
-     * Cấu hình bộ chuyển đổi JWT để trích xuất thông tin xác thực
+     * Cấu hình bộ chuyển đổi JWT để trích xuất thông tin xác thực từ token
      * 
-     * @return JwtAuthenticationConverter đã được cấu hình
+     * Chức năng:
+     * 1. Cấu hình cách trích xuất quyền (authorities) từ JWT claims
+     * 2. Xóa prefix của authority (mặc định là "ROLE_")
+     * 3. Đặt tên claim chứa thông tin quyền là "permission"
+     * 
+     * @return JwtAuthenticationConverter đã được cấu hình để xử lý JWT
      */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
