@@ -8,11 +8,14 @@ import java.time.Instant;
 
 @Getter
 @Setter
-public class UserUpdateDTO {
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ResUserGetDTO {
     private long id;
     private String name;
+    private String email;
     private int age;
     private GenderEnum gender;
     private String address;
-    private Instant updateAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 }

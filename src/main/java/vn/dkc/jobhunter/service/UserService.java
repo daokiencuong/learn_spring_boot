@@ -22,77 +22,77 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserCreateDTO handleCreateUser(User user) throws EmailExsitsException {
+    public ResUserCreateDTO handleCreateUser(User user) throws EmailExsitsException {
         if(this.userRepository.existsByEmail(user.getEmail())){
             throw new EmailExsitsException("Email " + user.getEmail() + " đã tồn tại. Vui lòng sử dụng email khác.");
         }
         User newUser = this.userRepository.save(user);
-        UserCreateDTO userCreateDTO = new UserCreateDTO();
+        ResUserCreateDTO resUserCreateDTO = new ResUserCreateDTO();
 
-        userCreateDTO.setId(newUser.getId());
-        userCreateDTO.setName(newUser.getName());
-        userCreateDTO.setEmail(newUser.getEmail());
-        userCreateDTO.setAge(newUser.getAge());
-        userCreateDTO.setGender(newUser.getGender());
-        userCreateDTO.setAddress(newUser.getAddress());
-        userCreateDTO.setCreatedAt(newUser.getCreatedAt());
+        resUserCreateDTO.setId(newUser.getId());
+        resUserCreateDTO.setName(newUser.getName());
+        resUserCreateDTO.setEmail(newUser.getEmail());
+        resUserCreateDTO.setAge(newUser.getAge());
+        resUserCreateDTO.setGender(newUser.getGender());
+        resUserCreateDTO.setAddress(newUser.getAddress());
+        resUserCreateDTO.setCreatedAt(newUser.getCreatedAt());
 
-        return userCreateDTO;
+        return resUserCreateDTO;
     }
 
-    public UserGetDTO handleGetUserById(long id){
+    public ResUserGetDTO handleGetUserById(long id){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IdInvalidException("User not found"));
 
-        UserGetDTO userGetDTO = new UserGetDTO();
+        ResUserGetDTO resUserGetDTO = new ResUserGetDTO();
 
-        userGetDTO.setId(user.getId());
-        userGetDTO.setName(user.getName());
-        userGetDTO.setEmail(user.getEmail());
-        userGetDTO.setAge(user.getAge());
-        userGetDTO.setGender(user.getGender());
-        userGetDTO.setAddress(user.getAddress());
+        resUserGetDTO.setId(user.getId());
+        resUserGetDTO.setName(user.getName());
+        resUserGetDTO.setEmail(user.getEmail());
+        resUserGetDTO.setAge(user.getAge());
+        resUserGetDTO.setGender(user.getGender());
+        resUserGetDTO.setAddress(user.getAddress());
 
-        return userGetDTO;
+        return resUserGetDTO;
     }
 
-    public UserUpdateDTO handleUpdateUser(UserUpdateDTO userUpdateDTO) throws IdInvalidException {
-        User user = userRepository.findById(userUpdateDTO.getId())
+    public ResUserUpdateDTO handleUpdateUser(ResUserUpdateDTO resUserUpdateDTO) throws IdInvalidException {
+        User user = userRepository.findById(resUserUpdateDTO.getId())
                 .orElseThrow(() -> new IdInvalidException("User not found"));
 
-        if (userUpdateDTO.getName() != null) {
-            user.setName(userUpdateDTO.getName());
+        if (resUserUpdateDTO.getName() != null) {
+            user.setName(resUserUpdateDTO.getName());
         }
 
-        if (userUpdateDTO.getAddress() != null) {
-            user.setAddress(userUpdateDTO.getAddress());
+        if (resUserUpdateDTO.getAddress() != null) {
+            user.setAddress(resUserUpdateDTO.getAddress());
         }
 
         user.setUpdatedAt(Instant.now());
 
         this.userRepository.save(user);
 
-        userUpdateDTO.setUpdateAt(user.getUpdatedAt());
+        resUserUpdateDTO.setUpdateAt(user.getUpdatedAt());
 
-        return userUpdateDTO;
+        return resUserUpdateDTO;
     }
 
     public ResultPaginationDTO handleGetAllUser(Specification<User> spec, Pageable pageable){
         Page<User> pageUser = this.userRepository.findAll(spec, pageable);
 
-        List<UserGetDTO> userGetDTOList = pageUser.getContent()
+        List<ResUserGetDTO> resUserGetDTOList = pageUser.getContent()
                 .stream()
                 .map(user -> {
-                    UserGetDTO userGetDTO = new UserGetDTO();
-                    userGetDTO.setId(user.getId());
-                    userGetDTO.setName(user.getName());
-                    userGetDTO.setEmail(user.getEmail());
-                    userGetDTO.setAge(user.getAge());
-                    userGetDTO.setGender(user.getGender());
-                    userGetDTO.setAddress(user.getAddress());
-                    userGetDTO.setCreatedAt(user.getCreatedAt());
-                    userGetDTO.setUpdatedAt(user.getUpdatedAt());
-                    return userGetDTO;
+                    ResUserGetDTO resUserGetDTO = new ResUserGetDTO();
+                    resUserGetDTO.setId(user.getId());
+                    resUserGetDTO.setName(user.getName());
+                    resUserGetDTO.setEmail(user.getEmail());
+                    resUserGetDTO.setAge(user.getAge());
+                    resUserGetDTO.setGender(user.getGender());
+                    resUserGetDTO.setAddress(user.getAddress());
+                    resUserGetDTO.setCreatedAt(user.getCreatedAt());
+                    resUserGetDTO.setUpdatedAt(user.getUpdatedAt());
+                    return resUserGetDTO;
                 })
                 .toList();
 
@@ -106,7 +106,7 @@ public class UserService {
         meta.setTotal(pageUser.getTotalElements());
 
         paginationDTO.setMeta(meta);
-        paginationDTO.setResult(userGetDTOList);
+        paginationDTO.setResult(resUserGetDTOList);
 
         return paginationDTO;
     }

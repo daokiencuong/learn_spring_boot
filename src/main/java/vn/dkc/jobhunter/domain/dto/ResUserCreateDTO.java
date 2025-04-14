@@ -10,7 +10,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserCreateDTO {
+public class ResUserCreateDTO {
     private long id;
     private String name;
     private String email;

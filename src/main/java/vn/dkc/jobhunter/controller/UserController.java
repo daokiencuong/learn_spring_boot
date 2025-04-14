@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import vn.dkc.jobhunter.domain.User;
 import vn.dkc.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.dkc.jobhunter.domain.dto.UserCreateDTO;
-import vn.dkc.jobhunter.domain.dto.UserGetDTO;
-import vn.dkc.jobhunter.domain.dto.UserUpdateDTO;
+import vn.dkc.jobhunter.domain.dto.ResUserCreateDTO;
+import vn.dkc.jobhunter.domain.dto.ResUserGetDTO;
+import vn.dkc.jobhunter.domain.dto.ResUserUpdateDTO;
 import vn.dkc.jobhunter.service.UserService;
 import vn.dkc.jobhunter.util.annotation.ApiMessage;
 
@@ -54,11 +54,11 @@ public class UserController {
      */
     @PostMapping("/users")
     @ApiMessage("Create new user")
-    public ResponseEntity<UserCreateDTO> createNewUser(@Valid @RequestBody User postManUser) {
+    public ResponseEntity<ResUserCreateDTO> createNewUser(@Valid @RequestBody User postManUser) {
         // Mã hóa mật khẩu trước khi lưu vào database
         String hashPassword = this.passwordEncoder.encode(postManUser.getPassword());
         postManUser.setPassword(hashPassword);
-        UserCreateDTO newUser = this.userService.handleCreateUser(postManUser);
+        ResUserCreateDTO newUser = this.userService.handleCreateUser(postManUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
@@ -69,7 +69,7 @@ public class UserController {
      * @return ResponseEntity chứa thông tin người dùng
      */
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserGetDTO> getUserById(@PathVariable("id") long id) {
+    public ResponseEntity<ResUserGetDTO> getUserById(@PathVariable("id") long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.handleGetUserById(id));
     }
 
@@ -91,7 +91,7 @@ public class UserController {
      * @return ResponseEntity chứa thông tin người dùng sau khi cập nhật
      */
     @PutMapping("/users")
-    public ResponseEntity<UserUpdateDTO> updateUser(@RequestBody UserUpdateDTO user) {
+    public ResponseEntity<ResUserUpdateDTO> updateUser(@RequestBody ResUserUpdateDTO user) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.handleUpdateUser(user));
     }
 
