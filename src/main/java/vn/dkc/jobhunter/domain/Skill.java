@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import vn.dkc.jobhunter.util.SecurityUtil;
 
 import java.time.Instant;
@@ -13,6 +15,8 @@ import java.util.List;
 @Table(name = "skills")
 @Getter
 @Setter
+@DynamicUpdate
+@DynamicInsert
 public class Skill {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

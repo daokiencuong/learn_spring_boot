@@ -27,8 +27,12 @@ public class GlobalException {
      * @param e Exception cần xử lý
      * @return ResponseEntity chứa thông tin lỗi đã được định dạng
      */
-    @ExceptionHandler(value = {UsernameNotFoundException.class, BadCredentialsException.class,
-            EmailExsitsException.class, IdInvalidException.class})
+    @ExceptionHandler(value = {UsernameNotFoundException.class,
+            BadCredentialsException.class,
+            EmailExsitsException.class,
+            IdInvalidException.class,
+            SkillExsitsException.class,
+            ObjectExistsException.class})
     public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception e) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
