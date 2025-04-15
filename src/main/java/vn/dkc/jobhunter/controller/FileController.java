@@ -1,11 +1,12 @@
 package vn.dkc.jobhunter.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.dkc.jobhunter.domain.response.File.ResFileUploadDTO;
 import vn.dkc.jobhunter.service.FileService;
@@ -59,5 +60,29 @@ public class FileController{
         ResFileUploadDTO resFileUploadDTO = new ResFileUploadDTO(uploadFile, Instant.now());
 
         return ResponseEntity.ok(resFileUploadDTO);
+    }
+
+    @GetMapping("/files")
+    @ApiMessage("Get a file")
+    public ResponseEntity<Resource> getFile(
+            @RequestParam("fileName") String fileName,
+            @RequestParam("folder") String folder
+    ) throws URISyntaxException, IOException {
+        if(fileName == null || fileName.isEmpty() || folder == null || folder.isEmpty()){
+            throw new StorageException("File or folder name is empty. Please provide a file (folder) name.");
+        }
+
+        long fileLength = this.fileService.getFileLength(fileName, folder);
+        if(fileLength == 0){
+            throw new StorageException("File " + fileName + " not found. Please check the file name and folder.");
+        }
+
+        InputStreamResource resource = this.fileService.getResource(fileName, folder);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .contentLength(fileLength)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 }
