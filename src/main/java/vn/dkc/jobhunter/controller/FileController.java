@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import vn.dkc.jobhunter.domain.response.File.ResFileUploadDTO;
 import vn.dkc.jobhunter.service.FileService;
+import vn.dkc.jobhunter.util.annotation.ApiMessage;
+import vn.dkc.jobhunter.util.error.StorageException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/${dkc.application.version}")
@@ -25,18 +30,34 @@ public class FileController{
     private String baseURI;
 
     @PostMapping("/files")
-    public ResponseEntity<Void> uploadFile(
-            @RequestParam("file") MultipartFile file,
+    @ApiMessage("Upload single file")
+    public ResponseEntity<ResFileUploadDTO> uploadFile(
+            @RequestParam(name = "file", required = false) MultipartFile file,
             @RequestParam("folder") String folder
     ) throws URISyntaxException, IOException {
-        //Skip validate
+        //Check file
+        if(file == null || file.isEmpty()){
+            throw new StorageException("File is empty. Please upload a file.");
+        }
+
+        String fileName = file.getOriginalFilename();
+        List<String> allowedExtensions = List.of("jpg", "png", "jpeg", "pdf", "docx", "doc");
+
+        boolean isValid = allowedExtensions.stream()
+                .anyMatch(extension -> fileName != null && fileName.toLowerCase().endsWith(extension));
+
+        if(!isValid){
+            throw new StorageException("File type is not supported. Please upload a valid file: " + String.join(", ", allowedExtensions));
+        }
 
         //Create directory
         this.fileService.createDirectory(baseURI+folder);
 
         //Save file
-        this.fileService.storeFile(file, folder);
+        String uploadFile = this.fileService.storeFile(file, folder);
 
-        return ResponseEntity.ok(null);
+        ResFileUploadDTO resFileUploadDTO = new ResFileUploadDTO(uploadFile, Instant.now());
+
+        return ResponseEntity.ok(resFileUploadDTO);
     }
 }

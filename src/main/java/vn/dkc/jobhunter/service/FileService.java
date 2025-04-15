@@ -36,7 +36,7 @@ public class FileService {
         }
     }
 
-    public void storeFile(MultipartFile file, String folder) throws URISyntaxException, IOException {
+    public String storeFile(MultipartFile file, String folder) throws URISyntaxException, IOException {
         String finalName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
         String pathFile = baseURI+folder+"/"+finalName;
 
@@ -46,5 +46,6 @@ public class FileService {
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("File saved: " + path.toString());
         }
+        return finalName;
     }
 }
