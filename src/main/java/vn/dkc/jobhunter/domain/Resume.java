@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import vn.dkc.jobhunter.util.SecurityUtil;
 import vn.dkc.jobhunter.util.constant.StatusResumeEnum;
 
@@ -13,6 +15,8 @@ import java.time.Instant;
 @Table(name = "resumes")
 @Getter
 @Setter
+@DynamicInsert
+@DynamicUpdate
 public class Resume {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

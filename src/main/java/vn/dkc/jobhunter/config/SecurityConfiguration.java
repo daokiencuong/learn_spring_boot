@@ -75,10 +75,20 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
             CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+
+        String[] whiteList = {
+                "/",
+                "/api/v1/auth/login",
+                "/api/v1/auth/refresh",
+                "/storage/**",
+                "/api/v1/companies/**",
+                "/api/v1/jobs/**",
+        };
+
         http.csrf(c -> c.disable()).cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz ->
                                 authz
-                                        .requestMatchers("/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/storage/**")
+                                        .requestMatchers(whiteList)
                                         .permitAll()
                         .anyRequest().authenticated()
 
