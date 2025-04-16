@@ -1,5 +1,7 @@
 package vn.dkc.jobhunter.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -11,6 +13,7 @@ import vn.dkc.jobhunter.util.SecurityUtil;
 import vn.dkc.jobhunter.util.constant.GenderEnum;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Entity đại diện cho người dùng trong hệ thống Sử dụng JPA để mapping với bảng 'users' trong
@@ -70,6 +73,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Resume> resumes;
+
 
     /**
      * Xử lý tự động trước khi lưu bản ghi mới Cập nhật thời gian tạo và người tạo
