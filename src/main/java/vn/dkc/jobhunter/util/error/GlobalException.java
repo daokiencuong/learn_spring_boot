@@ -34,7 +34,9 @@ public class GlobalException {
             SkillExsitsException.class,
             ObjectExistsException.class,
             StorageException.class,
-            ResumeException.class})
+            ResumeException.class,
+            RoleException.class,
+            PermissionException.class})
     public ResponseEntity<RestResponse<Object>> handleIdInvalidException(Exception e) {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());

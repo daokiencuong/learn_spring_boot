@@ -3,6 +3,8 @@ package vn.dkc.jobhunter.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 import vn.dkc.jobhunter.util.SecurityUtil;
 
 import java.time.Instant;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "permissions")
+@Getter
+@Setter
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
