@@ -1,6 +1,7 @@
 package vn.dkc.jobhunter.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import vn.dkc.jobhunter.util.SecurityUtil;
@@ -17,7 +18,10 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Email không được để trống")
     private String email;
+
+    @NotBlank(message = "URL không được để trống")
     private String url;
 
     @Enumerated(EnumType.STRING)

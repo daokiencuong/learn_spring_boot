@@ -1,6 +1,8 @@
 package vn.dkc.jobhunter.controller;
 
 import com.turkraft.springfilter.boot.Filter;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,7 @@ public class ResumeController {
 
     @PostMapping("/resumes")
     @ApiMessage("Create a new resume")
-    public ResponseEntity<ResResumeCreateDTO> createResume(@RequestBody Resume newResume) {
+    public ResponseEntity<ResResumeCreateDTO> createResume(@Valid @RequestBody Resume newResume) {
         ResResumeCreateDTO resResumeCreateDTO = this.resumeService.handleCreateResume(newResume);
         return ResponseEntity.status(HttpStatus.CREATED).body(resResumeCreateDTO);
     }
