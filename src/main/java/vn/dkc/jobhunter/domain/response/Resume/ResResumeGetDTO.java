@@ -2,6 +2,9 @@ package vn.dkc.jobhunter.domain.response.Resume;
 
 import lombok.Getter;
 import lombok.Setter;
+import vn.dkc.jobhunter.util.constant.StatusResumeEnum;
+
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -9,9 +12,9 @@ public class ResResumeGetDTO {
     private long id;
     private String email;
     private String url;
-    private String status;
-    private String createdAt;
-    private String updatedAt;
+    private StatusResumeEnum status;
+    private Instant createdAt;
+    private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
     private UserResume user;
