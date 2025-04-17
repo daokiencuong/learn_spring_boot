@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.dkc.jobhunter.domain.Permission;
+import vn.dkc.jobhunter.domain.Role;
 import vn.dkc.jobhunter.domain.response.ResultPaginationDTO;
 import vn.dkc.jobhunter.repository.PermissionRepository;
 import vn.dkc.jobhunter.util.error.PermissionException;
@@ -78,6 +79,19 @@ public class PermissionService {
 
         return resultPaginationDTO;
 
+    }
+
+    public void handleDeletePermission(Long id) {
+        if(!this.permissionRepository.existsById(id)) {
+            throw new PermissionException("Permission does not exist");
+        }
+
+        List<Role> roles = this.permissionRepository.findById(id).get().getRoles();
+        roles.stream().forEach(role -> {
+            role.getPermissions().remove(this.permissionRepository.findById(id).get());
+        });
+
+        this.permissionRepository.deleteById(id);
     }
 
     public boolean isPermissionExist(String permissionName) {

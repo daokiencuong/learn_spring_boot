@@ -44,4 +44,11 @@ public class PermissionController {
         ResultPaginationDTO resultPaginationDTO = permissionService.handleGetAllPermissions(specification, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(resultPaginationDTO);
     }
+
+    @DeleteMapping("/permissions/{id}")
+    @ApiMessage("Delete permission")
+    public ResponseEntity<Void> deletePermission(@PathVariable("id") Long id) {
+        permissionService.handleDeletePermission(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
