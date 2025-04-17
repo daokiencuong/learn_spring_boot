@@ -78,13 +78,14 @@ public class AuthController {
             ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                             currentUserDB.getId(),
                             currentUserDB.getEmail(),
-                            currentUserDB.getName()
+                            currentUserDB.getName(),
+                            currentUserDB.getRole()
             );
 
             resLoginDTO.setUser(userLogin);
         }
         // Tạo JWT token từ thông tin xác thực
-        String access_token = this.securityUtil.createAccessToken(authentication.getName(), resLoginDTO.getUser());
+        String access_token = this.securityUtil.createAccessToken(authentication.getName(), resLoginDTO);
 
         resLoginDTO.setAccessToken(access_token);
 
@@ -121,6 +122,7 @@ public class AuthController {
             userLogin.setId(currentUserDB.getId());
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setName(currentUserDB.getName());
+            userLogin.setRole(currentUserDB.getRole());
             userGetAccount.setUser(userLogin);
         }
 
@@ -149,13 +151,14 @@ public class AuthController {
                 ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin(
                         currentUserDB.getId(),
                         currentUserDB.getEmail(),
-                        currentUserDB.getName()
+                        currentUserDB.getName(),
+                        currentUserDB.getRole()
                 );
 
                 resLoginDTO.setUser(userLogin);
             }
             // Tạo JWT token từ thông tin xác thực
-            String new_access_token = this.securityUtil.createAccessToken(email, resLoginDTO.getUser());
+            String new_access_token = this.securityUtil.createAccessToken(email, resLoginDTO);
 
             resLoginDTO.setAccessToken(new_access_token);
 
