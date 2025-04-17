@@ -1,6 +1,8 @@
 package vn.dkc.jobhunter.domain.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vn.dkc.jobhunter.util.constant.GenderEnum;
 
@@ -19,10 +21,22 @@ public class ResUserGetDTO {
     private Instant createdAt;
     private Instant updatedAt;
     private CompanyUser company;
+    private RoleUser role;
 
     @Getter
     @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CompanyUser {
+        private long id;
+        private String name;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RoleUser{
         private long id;
         private String name;
     }

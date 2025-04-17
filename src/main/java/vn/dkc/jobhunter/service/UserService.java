@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.dkc.jobhunter.domain.Company;
+import vn.dkc.jobhunter.domain.Role;
 import vn.dkc.jobhunter.domain.User;
 import vn.dkc.jobhunter.domain.response.ResUserCreateDTO;
 import vn.dkc.jobhunter.domain.response.ResUserGetDTO;
@@ -23,10 +24,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final CompanyService companyService;
+    private final RoleService roleService;
 
-    public UserService(UserRepository userRepository, CompanyService companyService) {
+    public UserService(UserRepository userRepository, CompanyService companyService, RoleService roleService) {
         this.userRepository = userRepository;
         this.companyService = companyService;
+        this.roleService = roleService;
     }
 
     public ResUserCreateDTO handleCreateUser(User user) throws EmailExsitsException {
@@ -35,13 +38,16 @@ public class UserService {
             Optional<Company> company = this.companyService.companyRepository.findById(user.getCompany().getId());
             if(company.isPresent()){
                 user.setCompany(company.get());
-            } else {
-                throw new IdInvalidException("Company not found");
             }
         }
 
         if(this.userRepository.existsByEmail(user.getEmail())){
             throw new EmailExsitsException("Email " + user.getEmail() + " đã tồn tại. Vui lòng sử dụng email khác.");
+        }
+
+        if(user.getRole() != null){
+            Role role = this.roleService.handleGetARole(user.getRole().getId());
+            user.setRole(role != null ? role : null);
         }
 
         User newUser = this.userRepository.save(user);
@@ -72,22 +78,30 @@ public class UserService {
             Optional<Company> company = this.companyService.companyRepository.findById(resUserUpdateDTO.getCompany().getId());
             if(company.isPresent()){
                 user.setCompany(company.get());
-            } else {
-                throw new IdInvalidException("Company not found");
             }
         }
 
-        user.setUpdatedAt(Instant.now());
+        if(resUserUpdateDTO.getRole() != null){
+            Role role = this.roleService.handleGetARole(resUserUpdateDTO.getRole().getId());
+            user.setRole(role != null ? role : null);
+        }
 
-        this.userRepository.save(user);
+        User newUser = this.userRepository.save(user);
 
-        resUserUpdateDTO.setUpdateAt(user.getUpdatedAt());
+        resUserUpdateDTO.setUpdateAt(newUser.getUpdatedAt());
 
-        if(user.getCompany() != null){
+        if(newUser.getCompany() != null){
             ResUserUpdateDTO.CompanyUser companyUser = new ResUserUpdateDTO.CompanyUser();
-            companyUser.setId(user.getCompany().getId());
-            companyUser.setName(user.getCompany().getName());
+            companyUser.setId(newUser.getCompany().getId());
+            companyUser.setName(newUser.getCompany().getName());
             resUserUpdateDTO.setCompany(companyUser);
+        }
+
+        if(newUser.getRole() != null) {
+            ResUserUpdateDTO.RoleUser roleUser = new ResUserUpdateDTO.RoleUser();
+            roleUser.setId(newUser.getRole().getId());
+            roleUser.setName(newUser.getRole().getName());
+            resUserUpdateDTO.setRole(roleUser);
         }
 
         return resUserUpdateDTO;
@@ -161,6 +175,13 @@ public class UserService {
             resUserCreateDTO.setCompany(companyUser);
         }
 
+        if(user.getRole() != null) {
+            ResUserCreateDTO.RoleUser roleUser = new ResUserCreateDTO.RoleUser();
+            roleUser.setId(user.getRole().getId());
+            roleUser.setName(user.getRole().getName());
+            resUserCreateDTO.setRole(roleUser);
+        }
+
         return resUserCreateDTO;
     }
 
@@ -180,6 +201,13 @@ public class UserService {
             companyUser.setId(user.getCompany().getId());
             companyUser.setName(user.getCompany().getName());
             resUserGetDTO.setCompany(companyUser);
+        }
+
+        if(user.getRole() != null) {
+            ResUserGetDTO.RoleUser roleUser = new ResUserGetDTO.RoleUser();
+            roleUser.setId(user.getRole().getId());
+            roleUser.setName(user.getRole().getName());
+            resUserGetDTO.setRole(roleUser);
         }
 
         return resUserGetDTO;

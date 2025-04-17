@@ -78,6 +78,10 @@ public class User {
     @JsonIgnore
     private List<Resume> resumes;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
 
     /**
      * Xử lý tự động trước khi lưu bản ghi mới Cập nhật thời gian tạo và người tạo

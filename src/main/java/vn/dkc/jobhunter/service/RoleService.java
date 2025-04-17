@@ -74,4 +74,9 @@ public class RoleService {
 
         return resultPaginationDTO;
     }
+
+    public Role handleGetARole(Long id) {
+        return this.roleRepository.findById(id)
+                .orElseThrow(() -> new RoleException("Role not found"));
+    }
 }
