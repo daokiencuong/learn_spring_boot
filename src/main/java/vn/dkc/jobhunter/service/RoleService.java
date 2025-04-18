@@ -79,4 +79,9 @@ public class RoleService {
         return this.roleRepository.findById(id)
                 .orElseThrow(() -> new RoleException("Role not found"));
     }
+
+    public Role handleGetRoleById(Long id) {
+        return this.roleRepository.findById(id)
+                .orElseThrow(() -> new RoleException("Role not found"));
+    }
 }
