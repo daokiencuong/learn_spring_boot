@@ -52,7 +52,8 @@ public class PermissionService {
             Permission existingPermission = p;
             if(existingPermission.getApiPath().equals(permission.getApiPath()) &&
                     existingPermission.getMethod().equals(permission.getMethod()) &&
-                    existingPermission.getModule().equals(permission.getModule())) {
+                    existingPermission.getModule().equals(permission.getModule()) &&
+                    existingPermission.getName().equals(permission.getName())) {
                 throw new PermissionException("Permission already exists");
             }
         });
