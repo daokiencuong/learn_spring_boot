@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import vn.dkc.jobhunter.domain.Company;
 import vn.dkc.jobhunter.domain.Job;
 import vn.dkc.jobhunter.domain.Resume;
 import vn.dkc.jobhunter.domain.User;
@@ -34,13 +35,15 @@ public class ResumeService {
     private final JobRepository jobRepository;
     private final FilterParser filterParser;
     private final FilterSpecificationConverter filterSpecificationConverter;
+    private final FilterBuilder filterBuilder;
 
-    public ResumeService(ResumeRepository resumeRepository, UserRepository userRepository, JobRepository jobRepository, FilterParser filterParser, FilterSpecificationConverter filterSpecificationConverter) {
+    public ResumeService(ResumeRepository resumeRepository, UserRepository userRepository, JobRepository jobRepository, FilterParser filterParser, FilterSpecificationConverter filterSpecificationConverter, FilterBuilder filterBuilder) {
         this.resumeRepository = resumeRepository;
         this.userRepository = userRepository;
         this.jobRepository = jobRepository;
         this.filterParser = filterParser;
         this.filterSpecificationConverter = filterSpecificationConverter;
+        this.filterBuilder = filterBuilder;
     }
 
     public ResResumeCreateDTO handleCreateResume(Resume newResume) {
@@ -86,7 +89,28 @@ public class ResumeService {
     }
 
     public ResultPaginationDTO handleGetAllResumes(Specification<Resume> spec, Pageable pageable) {
-        Page<Resume> pageResume = this.resumeRepository.findAll(spec, pageable);
+        List<Long> arrJobs = null;
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() ?
+                SecurityUtil.getCurrentUserLogin().get() : "";
+        User currentUser = this.userRepository.findByEmail(email);
+        if(currentUser != null) {
+            Company userCompany = currentUser.getCompany();
+            if(userCompany != null) {
+                List<Job> companyJobs = userCompany.getJobs();
+                if(companyJobs != null && companyJobs.size() > 0) {
+                    arrJobs = companyJobs.stream()
+                            .map(Job::getId)
+                            .toList();
+                }
+            }
+        }
+
+        Specification<Resume> specFilter = filterSpecificationConverter.convert(filterBuilder.field("job")
+                .in(filterBuilder.input(arrJobs)).get());
+
+        Specification<Resume> finalSpec = specFilter.and(spec);
+
+        Page<Resume> pageResume = this.resumeRepository.findAll(finalSpec, pageable);
 
         List<ResResumeGetDTO> resResumeGetDTOList = pageResume.getContent()
                 .stream()
