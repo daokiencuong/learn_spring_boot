@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import vn.dkc.jobhunter.util.SecurityUtil;
 
 import java.time.Instant;
@@ -23,6 +25,8 @@ import java.util.List;
 @Table(name = "companies")
 @Getter
 @Setter
+@DynamicUpdate
+@DynamicInsert
 public class Company {
 
     /**
