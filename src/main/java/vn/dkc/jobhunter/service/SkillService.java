@@ -70,11 +70,16 @@ public class SkillService {
         Skill skill = this.skillRepository.findById(id)
                 .orElseThrow(() -> new SkillExsitsException("Skill not found"));
         skill.getJobs().forEach(job -> job.getSkills().remove(skill));
+        skill.getSubscribers().forEach(subscriber -> subscriber.getSkills().remove(skill));
 
         this.skillRepository.delete(skill);
     }
 
     public boolean isSkillExist(String name) {
         return this.skillRepository.existsByName(name);
+    }
+
+    public List<Skill> getSkillsByIds(List<Long> ids) {
+        return this.skillRepository.findByIdIn(ids);
     }
 }
