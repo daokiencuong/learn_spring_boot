@@ -14,33 +14,22 @@
                 <tr>
                     <td style="padding: 30px; text-align: center; background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%); color: #ffffff;">
                         <h1 style="margin: 0; font-size: 28px; font-weight: 700;">JOB HUNTER</h1>
-                        <p style="margin: 5px 0 0; font-size: 16px; font-weight: 400; opacity: 0.9;">ít nhưng mà chất</p>
+                        <p style="margin: 5px 0 0; font-size: 16px; font-weight: 400; opacity: 0.9;">Done is better than perfect!</p>
                     </td>
                 </tr>
                 <tr>
                     <td style="padding: 30px; color: #333333;">
-                        <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6;">Hi Harry Pham,</p>
+                        <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6;">Hi, <span th:text="${name}"></span></p>
                         <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6;">One of these jobs may be your next one. Find out today!</p>
 
-                        <div style="margin-bottom: 25px; padding: 20px; background-color: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
-                            <h2 style="margin: 0 0 10px; font-size: 18px; font-weight: 700; color: #1e40af;">Web Developer (PHP, JavaScript)</h2>
-                            <p style="margin: 0 0 5px; font-size: 16px; font-weight: 600; color: #333333;">VINAKET CO.LTD</p>
-                            <p style="margin: 0 0 5px; font-size: 16px; color: #2d6df6; font-weight: 600;">1,000 – 2,500 USD</p>
-                            <div style="margin-top: 10px;">
-                                <span style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px; margin-right: 5px;">Java</span>
-                                <span style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px; margin-right: 5px;">Spring</span>
-                                <span style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px;">English</span>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 25px; padding: 20px; background-color: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
-                            <h2 style="margin: 0 0 10px; font-size: 18px; font-weight: 700; color: #1e40af;">Web Developer (PHP, JavaScript)</h2>
-                            <p style="margin: 0 0 5px; font-size: 16px; font-weight: 600; color: #333333;">VINAKET CO.LTD</p>
-                            <p style="margin: 0 0 5px; font-size: 16px; color: #2d6df6; font-weight: 600;">1,000 – 2,500 USD</p>
-                            <div style="margin-top: 10px;">
-                                <span style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px; margin-right: 5px;">PHP</span>
-                                <span style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px; margin-right: 5px;">JavaScript</span>
-                                <span style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px;">English</span>
+                        <div th:each="job : ${jobs}">
+                            <div style="margin-bottom: 25px; padding: 20px; background-color: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+                                <h2 style="margin: 0 0 10px; font-size: 18px; font-weight: 700; color: #1e40af;" th:text="${job.name}"></h2>
+                                <p style="margin: 0 0 5px; font-size: 16px; font-weight: 600; color: #333333;" th:text="${job.company?.name}"></p>
+                                <p style="margin: 0 0 5px; font-size: 16px; color: #2d6df6; font-weight: 600;" th:text="${#numbers.formatDecimal(job.salary, 0, 'COMMA', 0, 'POINT')} + ' VND'"></p>
+                                <div style="margin-top: 10px;">
+                                    <span th:each="skill : ${job.skills}" style="display: inline-block; padding: 5px 10px; background-color: #e0e7ff; color: #4f46e5; border-radius: 5px; font-size: 14px; margin-right: 5px;" th:text="${skill.name}"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -49,7 +38,7 @@
                         </div>
 
                         <p style="margin: 30px 0 0; font-size: 16px; line-height: 1.6; color: #333333;">Cheers,</p>
-                        <p style="margin: 5px 0 0; font-size: 16px; line-height: 1.6; color: #333333;">Eric.</p>
+                        <p style="margin: 5px 0 0; font-size: 16px; line-height: 1.6; color: #333333;">JobHunter.</p>
                     </td>
                 </tr>
             </table>

@@ -4,15 +4,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import vn.dkc.jobhunter.service.EmailService;
+import vn.dkc.jobhunter.service.SubscriberService;
 import vn.dkc.jobhunter.util.annotation.ApiMessage;
 
 @RestController
 @RequestMapping("/api/v1")
 public class EmailController {
     private final EmailService emailService;
+    private final SubscriberService subscriberService;
 
-    public EmailController(EmailService emailService) {
+    public EmailController(EmailService emailService, SubscriberService subscriberService) {
         this.emailService = emailService;
+        this.subscriberService = subscriberService;
     }
 
     @GetMapping("/email")
@@ -27,12 +30,8 @@ public class EmailController {
 //                "<h1><b>Hello World</b></h1>",
 //                false,
 //                true);
+        this.subscriberService.sendSubscribersEmailJobs();
 
-        this.emailService.sendEmailFromTemplateSync(
-                "daokiencuong04@gmail.com",
-                "Thanks for signing up!",
-                "job"
-        );
         return "Email sent successfully!";
     }
 }
