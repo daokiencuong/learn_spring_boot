@@ -1,5 +1,6 @@
 package vn.dkc.jobhunter.service;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import vn.dkc.jobhunter.domain.Job;
 import vn.dkc.jobhunter.domain.Skill;

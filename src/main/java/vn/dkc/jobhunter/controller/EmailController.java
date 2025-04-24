@@ -1,5 +1,7 @@
 package vn.dkc.jobhunter.controller;
 
+import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +22,8 @@ public class EmailController {
 
     @GetMapping("/email")
     @ApiMessage("Send email")
+    @Scheduled(cron = "0 * * * * *")
+    @Transactional
     public String sendEmail() {
 //        this.emailService.sendSimpleEmail();
         // Logic to send email

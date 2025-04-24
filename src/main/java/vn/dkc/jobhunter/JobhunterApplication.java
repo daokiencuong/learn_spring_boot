@@ -3,6 +3,7 @@ package vn.dkc.jobhunter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Đây là class chính của ứng dụng JobHunter, sử dụng Spring Boot Framework
@@ -13,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @SpringBootApplication
 @EnableAsync
+@EnableScheduling
 public class JobhunterApplication {
 	/**
 	 * Phương thức main để khởi động ứng dụng Spring Boot
