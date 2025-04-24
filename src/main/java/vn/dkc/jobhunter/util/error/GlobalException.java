@@ -20,6 +20,17 @@ import java.util.stream.Collectors;
  */
 @RestControllerAdvice
 public class GlobalException {
+    //Handle all exception
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestResponse<Object>> handleException(Exception e) {
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setMessage(e.getMessage());
+        res.setError("Internal server error");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
+
+
     /**
      * Xử lý các exception liên quan đến xác thực Bao gồm lỗi không tìm thấy username và thông tin
      * đăng nhập không hợp lệ
