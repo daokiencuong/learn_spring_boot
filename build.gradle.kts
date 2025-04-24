@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.projectlombok:lombok")
 	implementation("com.turkraft.springfilter:jpa:3.1.7")
 	implementation("org.springframework.boot:spring-boot-starter-mail")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 	//Auto restart server when code change
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	compileOnly("org.projectlombok:lombok")
